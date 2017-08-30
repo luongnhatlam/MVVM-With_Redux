@@ -10,17 +10,20 @@ import ReSwift
 
 func appReducer(action:Action, state: AppState?) -> AppState {
     
-    var state = state ?? AppState()
+    return AppState(homeState: homeReducer(action: action, state: state?.homeState))
+}
+
+func homeReducer(action:Action, state: HomeState?) -> HomeState {
+    var state = state ?? HomeState()
     
     switch action {
     case _ as IncreaseAction:
-        state.counter += 1
+        state.counterNumber += 1
     case _ as DecreaseAction:
-        state.counter -= 1
+        state.counterNumber -= 1
     default:
         break
     }
-    
     
     return state
 }

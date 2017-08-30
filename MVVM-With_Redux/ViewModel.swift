@@ -8,24 +8,39 @@
 
 import ReSwift
 
-class ViewModel:StoreSubscriber {
+class BaseViewModel:StoreSubscriber {
     typealias StoreSubscriberStateType = AppState
+    
+    func newState(state: AppState) {
+        
+    }
+    
+    deinit {
+        store.unsubscribe(self)
+    }
+}
+
+class ViewModel:BaseViewModel {
+    
     var counter:String = "0"
     var viewModelUpdate:((String)->Void)?
-    init() {
+    
+    override init() {
+        
+    }
+    init(viewModelUpdate:((String)->Void)?) {
+        super.init()
+        self.viewModelUpdate    = viewModelUpdate
+        self.viewModelUpdate?(self.counter)
         store.subscribe(self)
     }
     
     // StoreSubscriber Protocol
-    func newState(state: AppState) {
-        self.counter = String(state.counter)
+    override func newState(state: AppState) {
+        self.counter = String(state.homeState.counterNumber)
         viewModelUpdate?(self.counter)
     }
-    //
-    
-    func updateUI() {
-        viewModelUpdate?(self.counter)
-    }
+
     func increaseCounter() {
         store.dispatch(IncreaseAction())
         
@@ -34,8 +49,5 @@ class ViewModel:StoreSubscriber {
     func decreaseCounter() {
         store.dispatch(DecreaseAction())
     }
-    
-    deinit {
-        store.unsubscribe(self)
-    }
+
 }

@@ -12,14 +12,12 @@ import ReSwift
 class ViewController: UIViewController {
 
     @IBOutlet weak var counterLabel: UILabel!
-    let viewModel:ViewModel = ViewModel()
+    var viewModel:ViewModel = ViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.viewModel.viewModelUpdate = { counter in
-            self.counterLabel.text = counter
-        }
-        self.viewModel.updateUI()
+        self.viewModel = ViewModel(viewModelUpdate: { counter in
+            self.counterLabel.text = self.viewModel.counter
+        })
     }
 
     @IBAction func increaseAction(_ sender: Any) {

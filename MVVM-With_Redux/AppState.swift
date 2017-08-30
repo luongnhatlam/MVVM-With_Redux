@@ -9,5 +9,9 @@
 import ReSwift
 
 struct AppState: StateType {
-    var counter:Int = 0
+    var homeState:HomeState
+}
+
+struct HomeState {
+    var counterNumber = 0
 }
